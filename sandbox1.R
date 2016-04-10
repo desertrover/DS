@@ -1,38 +1,20 @@
-# Define 2 vectors
-cars <- c(1, 3, 6, 4, 9)
-trucks <- c(2, 5, 4, 5, 12)
+# Create a sequence of numbers, and save them as vector "x:"
+x <- 1:2000
 
-# Calculate range from 0 to max value of cars and trucks
-g_range <- range(0, cars, trucks)
+# Create "y" as a function of "x" and an error term: 
+#y <- 20 + 0.6 * x + rnorm(200, sd = 10)  
+y <- (x^2)
 
-# Graph autos using y axis that ranges from 0 to max 
-# value in cars or trucks vector.  Turn off axes and 
-# annotations (axis labels) so we can specify them ourself
-plot(cars, type="o", col="blue", ylim=g_range, 
-   axes=FALSE, ann=FALSE)
 
-# Make x axis using Mon-Fri labels
-axis(1, at=1:5, lab=c("Mon","Tue","Wed","Thu","Fri"))
+# Scatterplot of "y" and "x:"
+plot(x, y)
+plot(x, y, xlim=c(1,2000), ylim=c(1,2000), pch=20, col="navy", main="Regression of Y on X") # Customize plot
+#abline(lm(y ~ x), col="red", lwd=3) # Add a regression line
+abline(lm(y~x), col="red", lwd=3) # Add a regression line
 
-# Make y axis with horizontal labels that display ticks at 
-# every 4 marks. 4*0:g_range[2] is equivalent to c(0,4,8,12).
-axis(2, las=1, at=4*0:g_range[2])
+# Linear (OLS) regression model:
+summary(lm(y ~ x))
 
-# Create box around plot
-box()
+# Save the "x,y" dataset as CSV file: 
+write.csv(data.frame(xval=x, yval=y), file = "my_dataset.csv", row.names = FALSE)
 
-# Graph trucks with red dashed line and square points
-lines(trucks, type="o", pch=22, lty=2, col="red")
-
-# Create a title with a red, bold/italic font
-title(main="Autos", col.main="red", font.main=4)
-
-# Label the x and y axes with dark green text
-title(xlab="Days", col.lab=rgb(0,0.5,0))
-title(ylab="Total", col.lab=rgb(0,0.5,0))
-
-# Create a legend at (1, g_range[2]) that is slightly smaller 
-# (cex) and uses the same line colors and points used by 
-# the actual plots 
-legend(1, g_range[2], c("cars","trucks"), cex=0.8, 
-   col=c("blue","red"), pch=21:22, lty=1:2);
